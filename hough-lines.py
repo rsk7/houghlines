@@ -1,12 +1,20 @@
 # http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html
 
+import sys
 import cv2
 import numpy as np
 
-img = cv2.imread(r"C:\Users\rsingh\Desktop\sudoku-test.png")
+# usage: python hough-lines.py [img_path] [output_path]
+
+if len(sys.argv) < 3:
+  print("Usage: python hough-lines.py [img_path] [output_path]")
+  sys.exit()
+
+imgIn, imgOut = sys.argv[1], sys.argv[2]
+
+img = cv2.imread(imgIn)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 edges = cv2.Canny(gray, 100, 200)
-
 lines = cv2.HoughLines(edges, 1, np.pi/180, 200)
 
 for l in lines:
@@ -22,6 +30,6 @@ for l in lines:
 
     cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
-cv2.imwrite("houghlines3.jpg", img)
+cv2.imwrite(imgOut, img)
 
 
