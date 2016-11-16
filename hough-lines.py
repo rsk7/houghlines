@@ -17,6 +17,20 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 edges = cv2.Canny(gray, 100, 200)
 lines = cv2.HoughLines(edges, 1, np.pi/180, 200)
 
+# find lines that are close
+# prb better way to write this in python
+lines_to_remove = []
+for idx, l in enumerate(lines):
+  for l2 in lines[idx+1:]:
+    # within +- 5
+    threshold = 5;
+    difference = abs(l[0][0] - l2[0][0])
+    if difference <= threshold and l[0][1] == l2[0][1]:
+      lines_to_remove.append(l2[0][0])
+
+# filter lines that are close
+lines = [x for x in lines if x[0][0] not in lines_to_remove]
+
 for l in lines:
   for rho, theta in l:
     a = np.cos(theta)
