@@ -21,6 +21,20 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 edges = cv2.Canny(gray, 100, 200)
 lines = cv2.HoughLines(edges, 1, np.pi/180, 200)
 
+def l2p(rt):
+  return line2point(rt[0][0], rt[0][1])
+
+def line2point(rho, theta):
+  a = np.cos(theta)
+  b = np.sin(theta)
+  x0 = a * rho
+  y0 = b * rho
+  x1 = int(x0 + 1000 * (-b))
+  y1 = int(y0 + 1000 * ( a))
+  x2 = int(x0 + 1000 * (-b))
+  y2 = int(y0 + 1000 * ( a))
+  return ((x1, y1), (x2, y2))
+
 # find lines that are close
 # prb better way to write this in python
 lines_to_remove = []
@@ -38,25 +52,10 @@ lines = [x for x in lines if x[0][0] not in lines_to_remove]
 for l in lines:
   for rho, theta in l:
     line = line2point(rho, theta)
-    cv2.line(img, (line1, y1), (x2, y2), (0, 0, 255), 2)
-
+    cv2.line(img, line[0], line[1], (0, 0, 255), 2)
 
 
 thetas = set([x[0][1] for x in lines])
-
-
-def line2point(rho, theta):
-  a = np.cos(theta)
-  b = np.sin(theta)
-  x0 = a * rho
-  y0 = b * rho
-  x1 = int(x0 + 1000 * (-b))
-  y1 = int(y0 + 1000 * ( a))
-  x2 = int(x0 + 1000 * (-b))
-  y2 = int(y0 + 1000 * ( a))
-  return { p1: [x1, y1], p2: [x2, y2] }
-
-
 
 # reduce thetas to two values
 # or group thetas together
@@ -64,13 +63,18 @@ groupedlines = []
 for t in thetas:
   groupedlines.append([x for x in lines if x[0][1] == t])
 
-
-
 # compute cartesian product of line groupings
 cartesian = list(itertools.product(*groupedlines))
 
+print(cartesian[0])
+print(cartesian[0][0])
+print(cartesian[0][1])
+
+# convert cartesian to line point form
+pointform = [(l2p(c[0]), l2p(c[1])) for c in cartesian]
 
 # points of intersection
+
 
 
 
