@@ -66,12 +66,13 @@ for t in thetas:
 # compute cartesian product of line groupings
 cartesian = list(itertools.product(*groupedlines))
 
-print(cartesian[0])
-print(cartesian[0][0])
-print(cartesian[0][1])
-
 # convert cartesian to line point form
+# might contain too many entries
 pointform = [(l2p(c[0]), l2p(c[1])) for c in cartesian]
+
+
+print(pointform[0])
+print(pointform[1])
 
 # points of intersection
 
