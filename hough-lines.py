@@ -31,8 +31,8 @@ def line2point(rho, theta):
   y0 = b * rho
   x1 = int(x0 + 1000 * (-b))
   y1 = int(y0 + 1000 * ( a))
-  x2 = int(x0 + 1000 * (-b))
-  y2 = int(y0 + 1000 * ( a))
+  x2 = int(x0 - 1000 * (-b))
+  y2 = int(y0 - 1000 * ( a))
   return ((x1, y1), (x2, y2))
 
 # find lines that are close
@@ -65,6 +65,9 @@ for t in thetas:
 
 # compute cartesian product of line groupings
 cartesian = list(itertools.product(*groupedlines))
+
+print(cartesian[0])
+print(l2p(cartesian[0][0]))
 
 # convert cartesian to line point form
 # might contain too many entries
