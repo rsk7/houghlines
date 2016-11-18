@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 import itertools
 
+import intersection
+
 from functools import reduce
 
 
@@ -66,18 +68,20 @@ for t in thetas:
 # compute cartesian product of line groupings
 cartesian = list(itertools.product(*groupedlines))
 
-print(cartesian[0])
-print(l2p(cartesian[0][0]))
-
 # convert cartesian to line point form
 # might contain too many entries
 pointform = [(l2p(c[0]), l2p(c[1])) for c in cartesian]
 
-
-print(pointform[0])
-print(pointform[1])
+# convert to line form
+lineform = [(intersection.line(p[0][0], p[0][1]), intersection.line(p[1][0], p[1][1])) for p in pointform]
 
 # points of intersection
+points = [intersection.intersection(l[0], l[1]) for l in lineform]
+
+
+print(points)
+
+
 
 
 

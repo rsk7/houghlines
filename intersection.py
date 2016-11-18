@@ -14,7 +14,7 @@ def intersection(L1, L2):
   if D != 0:
     x = Dx / D
     y = Dy / D
-    return x, y
+    return (x, y)
   else:
     return False
 
